@@ -1,5 +1,7 @@
 'use strict';
 const http = require('http');
+// https://nodejs.org/api/querystring.html, 投稿後のメッセージ整形用
+const qs = require('querystring');
 const server = http
   .createServer((req, res) => {
     const now = new Date();
@@ -9,9 +11,13 @@ const server = http
     });
 
     switch (req.method) {
+      // GET の時にform.htmlファイルの内容を送る
       case 'GET':
         const fs = require('fs');
         const rs = fs.createReadStream('./form.html');
+        // Node.js では Stream の形式のデータは、pipeによって読み込み用の Stream と
+        // 書き込み用の Stream を繋つないで そのままデータを受け渡すことができる
+        // pipe 関数を利用した場合は res.end 関数を呼ぶ必要がなくなるためPOSTのときのみend
         rs.pipe(res);
         break;
       case 'POST':
@@ -21,12 +27,17 @@ const server = http
             rawData = rawData + chunk;
           })
           .on('end', () => {
-            const decoded = decodeURIComponent(rawData);
-            console.info('[' + now + '] 投稿: ' + decoded);
+            // // URL エンコードされた値を 元のものに直す
+            // const decoded = decodeURIComponent(rawData);
+            const answer = qs.parse(rawData);
+            const body = answer['name'] + 'さんは' + answer['yaki-shabu'] + 'に投票しました';
+            console.info('[' + now + '] 投稿: ' + decodeURIComponent(rawData));
+            console.info('[' + now + ']' + body); 
             res.write(
-              '<!DOCTYPE html><html lang="ja"><body><h1>' +
-                decoded +
-                'が投稿されました</h1></body></html>'
+              '<!DOCTYPE html><html lang="ja"><body><h1>' + 
+              body +
+              // decoded + 'が投稿されました'
+                '</h1></body></html>'
             );
             res.end();
           });
