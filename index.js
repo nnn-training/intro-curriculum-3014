@@ -20,15 +20,17 @@ const server = http
           .on('data', chunk => {
             rawData = rawData + chunk;
           })
-          .on('end', () => {
+         .on('end', () => {
             const decoded = decodeURIComponent(rawData);
-            console.info('[' + now + '] 投稿: ' + decoded);
+            console.info('[' + now + '] 投稿 ' + decoded);
+            const qs = require('querystring');
+            const answer = qs.parse(decoded);
+            const body = `${ answer['name'] }さんが${ answer['yaki-shabu'] }に投票しました`
             res.write(
               '<!DOCTYPE html><html lang="ja"><body><h1>' +
-                decoded +
-                'が投稿されました</h1></body></html>'
+              body +
+              '</h1></body></html>'
             );
-            res.end();
           });
         break;
       default:
