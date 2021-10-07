@@ -1,5 +1,6 @@
 'use strict';
 const http = require('http');
+const qs = require('querystring');
 const server = http
   .createServer((req, res) => {
     const now = new Date();
@@ -22,11 +23,12 @@ const server = http
           })
           .on('end', () => {
             const decoded = decodeURIComponent(rawData);
+            const answer = qs.parse(decoded);
             console.info('[' + now + '] 投稿: ' + decoded);
             res.write(
               '<!DOCTYPE html><html lang="ja"><body><h1>' +
-                decoded +
-                'が投稿されました</h1></body></html>'
+                answer['name'] + 'さんは' + answer['yaki-shabu'] +
+                'に投票しました</h1></body></html>ちなみに花占いでは明日は' + lot()
             );
             res.end();
           });
@@ -45,3 +47,8 @@ const port = 8000;
 server.listen(port, () => {
   console.info('[' + new Date() + '] Listening on ' + port);
 });
+
+const lots = ['晴れでしょう','くもりでしょう','雨でしょう'];
+function lot(){
+  return lots[Math.floor(Math.random() * lots.length)];
+}
