@@ -2,14 +2,20 @@
 <html lang="ja">
 <head>
 	<meta charset="UTF-8">
-	<title>アンケート</title>
+	<title>どちらが食べたい？ アンケート</title>
+	<link rel="shortcut icon" href="n-yobi.ico" type="image/x-icon">
 </head>
-
 <body>
-	<h1>どちらが食べたいですか？</h1>
+	<div class="title">
+		<h1>どちらが食べたいですか？</h1>
+		<p>アンケートにお答えください</p>
+	</div>
+	<hr noshade>
 	<form method="post" action="/enquetes/yaki-shabu">
 		<input type="radio" name="yaki-shabu" value="焼き肉" /> 焼き肉
 		<input type="radio" name="yaki-shabu" value="しゃぶしゃぶ" /> しゃぶしゃぶ
+		<br>
+		名前: <input type="text" name="name">
 		<button type="submit">投稿</button>
 	</form>
 </body>
