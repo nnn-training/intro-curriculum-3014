@@ -1,17 +1,65 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-	<meta charset="UTF-8">
-	<title>アンケート</title>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <title>アンケート</title>
+    <link rel="stylesheet" href="form.css">
+  </head>
+  <body>
+    <h1>どちらが食べたいですか？</h1>
+    <form method="post" action="/enquetes/want-food">
 
-<body>
-	<h1>どちらが食べたいですか？</h1>
-	<form method="post" action="/enquetes/yaki-shabu">
-		<input type="radio" name="yaki-shabu" value="焼き肉" /> 焼き肉
-		<input type="radio" name="yaki-shabu" value="しゃぶしゃぶ" /> しゃぶしゃぶ
-		<button type="submit">投稿</button>
-	</form>
-</body>
+      <p><input type="text" name="name" value="ゲスト" placeholder="名前を入力" /></p>
 
+      <p>
+        <input type="radio" name="want-food" value="焼き肉" id="yakiniku" /> 
+
+        <label for="yakiniku" >焼き肉</label>
+
+        <input type="radio" name="want-food" value="しゃぶしゃぶ" id="shabushabu" /> 
+
+        <label for="shabushabu">しゃぶしゃぶ</label>
+
+        <input type="radio" name="want-food" value="カレー" id="curry" /> 
+
+        <label for="curry">カレー</label>
+
+        <input type="radio" name="want-food" value="ラーメン" id="noodle" /> 
+
+        <label for="noodle">ラーメン</label>
+      </p>
+
+      <button type="submit">投稿</button>
+    </form>
+    
+<style>
+p {
+        padding: 10px;
+}
+
+body {
+  margin: 10% 0 0 20%;
+}
+
+input[type="text"] {
+  width: 25%;
+  padding: 5px;
+  border: 1px solid #999;
+  border-radius: 2px;
+}
+
+button {
+  border: 1px solid #999;
+  border-radius: 2px;
+}
+
+button:hover, label:hover, input[type="text"]:hover {
+  opacity: .6;
+}
+
+input[type="text"]:focus {
+  opacity: 1;
+}
+    </style>
+  </body>
 </html>
