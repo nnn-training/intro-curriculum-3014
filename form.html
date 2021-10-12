@@ -3,13 +3,28 @@
 <head>
 	<meta charset="UTF-8">
 	<title>アンケート</title>
+	<style>
+		html {
+			background-color: rgb(212, 198, 175);
+		}
+		body {
+			width: 700px;
+			height: 200px;
+			margin-right: auto;
+			margin-left: auto;
+			background-color: rgb(92, 198, 206);
+			text-align: center;
+			border-radius: 30px;
+		}
+	</style>
 </head>
 
 <body>
 	<h1>どちらが食べたいですか？</h1>
 	<form method="post" action="/enquetes/yaki-shabu">
 		<input type="radio" name="yaki-shabu" value="焼き肉" /> 焼き肉
-		<input type="radio" name="yaki-shabu" value="しゃぶしゃぶ" /> しゃぶしゃぶ
+		<input type="radio" name="yaki-shabu" value="しゃぶしゃぶ" /> しゃぶしゃぶ<br><br>
+		名前: <input type="text" name="name" /><br><br>
 		<button type="submit">投稿</button>
 	</form>
 </body>
