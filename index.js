@@ -1,4 +1,5 @@
 'use strict';
+const qs = require('querystring');
 const http = require('http');
 const server = http
   .createServer((req, res) => {
@@ -22,11 +23,16 @@ const server = http
           })
           .on('end', () => {
             const decoded = decodeURIComponent(rawData);
+            const answer = qs.parse(decoded);
+            const text = `${answer['name']}さんは${answer['yaki-shabu-suki']}に投票しました。`
             console.info('[' + now + '] 投稿: ' + decoded);
             res.write(
-              '<!DOCTYPE html><html lang="ja"><body><h1>' +
-                decoded +
-                'が投稿されました</h1></body></html>'
+              `<!DOCTYPE html>
+              <html lang="ja">
+              <body>
+                <h1>${text}</h1>
+              </body>
+              </html>`
             );
             res.end();
           });
