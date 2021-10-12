@@ -3,7 +3,7 @@ const http = require('http');
 const server = http
   .createServer((req, res) => {
     const now = new Date();
-    console.info('[' + now + '] Requested by ' + req.socket.remoteAddress);
+    console.info(`[${now}] Requested by ${req.socket.remoteAddress}`);
     res.writeHead(200, {
       'Content-Type': 'text/html; charset=utf-8'
     });
@@ -22,11 +22,13 @@ const server = http
           })
           .on('end', () => {
             const decoded = decodeURIComponent(rawData);
-            console.info('[' + now + '] 投稿: ' + decoded);
+            const qs = require('querystring');
+            const answer = qs.parse(decoded)
+            console.info(`[${now}] 投稿: ${answer['yaki-shabu']}`);
             res.write(
-              '<!DOCTYPE html><html lang="ja"><body><h1>' +
-                decoded +
-                'が投稿されました</h1></body></html>'
+              `<!DOCTYPE html><html lang="ja"><body><h1>
+                ${answer['name']}さんは、${answer['yaki-shabu']}を食べたいそうです。
+                </h1></body></html>`
             );
             res.end();
           });
@@ -35,13 +37,13 @@ const server = http
         break;
     }
   })
-  .on('error', e => {
-    console.error('[' + new Date() + '] Server Error', e);
+  .on('error', e => {// `[${new Date()}] Listening on ${port}`
+    console.error(`[${new Date()}] Server Error`, e);
   })
   .on('clientError', e => {
-    console.error('[' + new Date() + '] Client Error', e);
+    console.error(`[${new Date()}] Client Error`, e);
   });
 const port = 8000;
 server.listen(port, () => {
-  console.info('[' + new Date() + '] Listening on ' + port);
+  console.info(`[${new Date()}] Listening on ${port}`);
 });
