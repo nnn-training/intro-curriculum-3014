@@ -37,7 +37,7 @@ const server = http
         break;
     }
   })
-  .on('error', e => {// `[${new Date()}] Listening on ${port}`
+  .on('error', e => {
     console.error(`[${new Date()}] Server Error`, e);
   })
   .on('clientError', e => {
