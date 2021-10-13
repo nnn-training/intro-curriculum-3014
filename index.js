@@ -1,5 +1,6 @@
 'use strict';
 const http = require('http');
+const ps = require('querystring');
 const server = http
   .createServer((req, res) => {
     const now = new Date();
@@ -21,12 +22,12 @@ const server = http
             rawData = rawData + chunk;
           })
           .on('end', () => {
-            const decoded = decodeURIComponent(rawData);
-            console.info('[' + now + '] 投稿: ' + decoded);
+            const qs = require('querystring');
+            const answer = qs.parse(rawData);
+            const params = decodeURIComponent(rawData);
+            console.info(`[${now}] 投稿: ${params}`);
             res.write(
-              '<!DOCTYPE html><html lang="ja"><body><h1>' +
-                decoded +
-                'が投稿されました</h1></body></html>'
+              `<!DOCTYPE html><html lang="ja"><body><h1> ${answer['username']}　さんは　${answer['yaki-shabu']} が投稿されました</h1></body></html>`
             );
             res.end();
           });
