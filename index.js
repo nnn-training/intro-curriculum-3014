@@ -18,15 +18,15 @@ const server = http
         let rawData = '';
         req
           .on('data', chunk => {
-            rawData = rawData + chunk;
+            rawData += chunk;
           })
           .on('end', () => {
             const decoded = decodeURIComponent(rawData);
-            console.info('[' + now + '] 投稿: ' + decoded);
+            const qs = require('querystring');
+            const answer = qs.parse(decoded);
+            console.info(`[${now}] 名前: ${answer['userName']}  投稿内容: ${answer['yaki-shabu']}`);
             res.write(
-              '<!DOCTYPE html><html lang="ja"><body><h1>' +
-                decoded +
-                'が投稿されました</h1></body></html>'
+              `<!DOCTYPE html><html lang="ja"><body><h1>${answer['userName']}さんは${answer['yaki-shabu']}に投票されました。</h1></body></html>`
             );
             res.end();
           });
