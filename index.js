@@ -22,11 +22,11 @@ const server = http
           })
           .on('end', () => {
             const decoded = decodeURIComponent(rawData);
-            console.info('[' + now + '] 投稿: ' + decoded);
+            const qs = require('querystring');  // querystringモジュールの読み出し
+            const answer = qs.parse(decoded);   // '&'で繋がれた要素を分ける、'='で接続されている値をキーと値に設定する
+            console.info(`[${now}] 投稿: ${answer['name']} さんが ${answer['yaki-shabu']} に投票しました`);
             res.write(
-              '<!DOCTYPE html><html lang="ja"><body><h1>' +
-                decoded +
-                'が投稿されました</h1></body></html>'
+              `<!DOCTYPE html><html lang="ja"><body><h1>${answer['name']}さんが${answer['yaki-shabu']}に投稿しました</h1></body></html>`
             );
             res.end();
           });
