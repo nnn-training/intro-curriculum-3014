@@ -22,11 +22,21 @@ const server = http
           })
           .on('end', () => {
             const decoded = decodeURIComponent(rawData);
+            const qs = require('querystring');
+            const answer = qs.parse(decoded);
+                        
             console.info('[' + now + '] 投稿: ' + decoded);
             res.write(
-              '<!DOCTYPE html><html lang="ja"><body><h1>' +
-                decoded +
-                'が投稿されました</h1></body></html>'
+              `
+              <!DOCTYPE html>
+              <html lang="ja">
+                <body>
+                  <h1>
+                    ${answer['name']}さんは${answer['yaki-shabu']}に投票しました。
+                  </h1>
+                </body>
+              </html>
+              `              
             );
             res.end();
           });
