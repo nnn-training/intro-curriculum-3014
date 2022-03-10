@@ -8,9 +8,14 @@
 <body>
 	<h1>どちらが食べたいですか？</h1>
 	<form method="post" action="/enquetes/yaki-shabu">
+		<!-- inputタグを使ったコンポーネント：
+		ラジオボタン：type="radio", チェックリスト：type="checkbox", テキスト：type="text" -->
 		<input type="radio" name="yaki-shabu" value="焼き肉" /> 焼き肉
 		<input type="radio" name="yaki-shabu" value="しゃぶしゃぶ" /> しゃぶしゃぶ
+		名前: <input type="text" name="name" />
 		<button type="submit">投稿</button>
+		<!-- その他コンポーネント：
+		3つから選択のプルダウンメニュー：<select size='3'>、プログレスバー：<progress> -->
 	</form>
 </body>
 
