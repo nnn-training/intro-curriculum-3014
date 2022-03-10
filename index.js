@@ -23,10 +23,14 @@ const server = http
           .on('end', () => {
             const decoded = decodeURIComponent(rawData);
             console.info('[' + now + '] 投稿: ' + decoded);
+            const qs = require('querystring');
+            const answer = qs.parse(decoded);
             res.write(
               '<!DOCTYPE html><html lang="ja"><body><h1>' +
-                decoded +
-                'が投稿されました</h1></body></html>'
+              answer['name'] +
+              'さんは' +
+              answer['yaki-shabu'] +
+              'に投票しました</h1></body></html>'
             );
             res.end();
           });
@@ -41,7 +45,7 @@ const server = http
   .on('clientError', e => {
     console.error('[' + new Date() + '] Client Error', e);
   });
-const port = 8000;
+const port = 8080;
 server.listen(port, () => {
   console.info('[' + new Date() + '] Listening on ' + port);
 });
