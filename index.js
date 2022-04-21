@@ -1,45 +1,50 @@
 'use strict';
 const http = require('http');
 const server = http
-  .createServer((req, res) => {
-    const now = new Date();
-    console.info(`[${now}] Requested by ${req.socket.remoteAddress}`);
-    res.writeHead(200, {
-      'Content-Type': 'text/html; charset=utf-8'
-    });
+    .createServer((req, res) => {
+        const now = new Date();
+        console.info(`[${now}] Requested by ${req.socket.remoteAddress}`);
+        res.writeHead(200, {
+            'Content-Type': 'text/html; charset=utf-8'
+        });
 
-    switch (req.method) {
-      case 'GET':
-        const fs = require('fs');
-        const rs = fs.createReadStream('./form.html');
-        rs.pipe(res);
-        break;
-      case 'POST':
-        let rawData = '';
-        req
-          .on('data', chunk => {
-            rawData += chunk;
-          })
-          .on('end', () => {
-            const decoded = decodeURIComponent(rawData);
-            console.info(`[${now}] 投稿: ${decoded}`);
-            res.write(
-              `<!DOCTYPE html><html lang="ja"><body><h1>${decoded}が投稿されました</h1></body></html>`
-            );
-            res.end();
-          });
-        break;
-      default:
-        break;
-    }
-  })
-  .on('error', e => {
-    console.error(`[${new Date()}] Server Error`, e);
-  })
-  .on('clientError', e => {
-    console.error(`[${new Date()}] Client Error`, e);
-  });
+        switch (req.method) {
+            case 'GET':
+                const fs = require('fs');
+                const rs = fs.createReadStream('./form.html');
+                rs.pipe(res);
+                break;
+            case 'POST':
+                let rawData = '';
+                req
+                    .on('data', chunk => {
+                        rawData += chunk;
+                    })
+                    .on('end', () => {
+                        const decoded = decodeURIComponent(rawData);
+                        // URLSearchPrams を使うとパラメータの変数名を answer.getで取り出せる
+                        const answer = new URLSearchParams(decoded);
+                        const nameAndYakishabu = [answer.get('name'), answer.get('yaki-shabu')];
+                        const resultMessage = `${nameAndYakishabu[0]} さんは ${nameAndYakishabu[1]} に投票しました！`;
+
+                        console.info(`[${now}] 投稿: ${resultMessage}`);
+                        res.write(
+                            `<!DOCTYPE html><html lang="ja"><body><h1>${resultMessage}</h1></body></html>`
+                        );
+                        res.end();
+                    });
+                break;
+            default:
+                break;
+        }
+    })
+    .on('error', e => {
+        console.error(`[${new Date()}] Server Error`, e);
+    })
+    .on('clientError', e => {
+        console.error(`[${new Date()}] Client Error`, e);
+    });
 const port = 8000;
 server.listen(port, () => {
-  console.info(`[${new Date()}] Listening on ${port}`);
+    console.info(`[${new Date()}] Listening on ${port}`);
 });
