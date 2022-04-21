@@ -24,12 +24,11 @@ const server = http
                         const decoded = decodeURIComponent(rawData);
                         // URLSearchPrams を使うとパラメータの変数名を answer.getで取り出せる
                         const answer = new URLSearchParams(decoded);
-                        const nameAndYakishabu = [answer.get('name'), answer.get('yaki-shabu')];
-                        const resultMessage = `${nameAndYakishabu[0]} さんは ${nameAndYakishabu[1]} に投票しました！`;
+                        const body = `${answer.get('name')} さんは ${answer.get('yaki-shabu')} に投票しました！`;
 
-                        console.info(`[${now}] 投稿: ${resultMessage}`);
+                        console.info(`[${now}] 投稿: ${body}`);
                         res.write(
-                            `<!DOCTYPE html><html lang="ja"><body><h1>${resultMessage}</h1></body></html>`
+                            `<!DOCTYPE html><html lang="ja"><body><h1>${body}</h1></body></html>`
                         );
                         res.end();
                     });
