@@ -1,5 +1,6 @@
 'use strict';
 const http = require('http');
+const fs = require('fs');
 const server = http
   .createServer((req, res) => {
     const now = new Date();
@@ -21,10 +22,11 @@ const server = http
             rawData += chunk;
           })
           .on('end', () => {
-            const decoded = decodeURIComponent(rawData);
-            console.info(`[${now}] 投稿: ${decoded}`);
+            const answer = new URLSearchParams(rawData);
+            const body = `${answer.get('name')}さんは${answer.get('yaki-shabu')}に投票しました`
+            console.info(`[${now}] ${body}`);
             res.write(
-              `<!DOCTYPE html><html lang="ja"><body><h1>${decoded}が投稿されました</h1></body></html>`
+              `<!DOCTYPE html><html lang="ja"><body><h1>${body}</h1></body></html>`
             );
             res.end();
           });
