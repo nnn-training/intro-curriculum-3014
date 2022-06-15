@@ -28,6 +28,7 @@ const server = http
             console.info(`[${now}] 投稿: ${decoded}`);
 
             //表示されるHTMLに投稿者の名前も含まれるように変更
+            //URLSearchParamsオブジェクトから値を取り出す際にはgetを用いる
             res.write(`
               <!DOCTYPE html>
               <html lang="ja">
