@@ -22,10 +22,23 @@ const server = http
           })
           .on('end', () => {
             const decoded = decodeURIComponent(rawData);
+
+            //URLのパラメータをオブジェクト化
+            const answer = new URLSearchParams(decoded);
             console.info(`[${now}] 投稿: ${decoded}`);
-            res.write(
-              `<!DOCTYPE html><html lang="ja"><body><h1>${decoded}が投稿されました</h1></body></html>`
-            );
+
+            //表示されるHTMLに投稿者の名前も含まれるように変更
+            //URLSearchParamsオブジェクトから値を取り出す際にはgetを用いる
+            res.write(`
+              <!DOCTYPE html>
+              <html lang="ja">
+                <body>
+                  <h1>
+                    ${answer.get('name')}さんは${answer.get('yaki-shabu')}に投票しました
+                  </h1>
+                </body>
+              </html>
+            `);
             res.end();
           });
         break;
