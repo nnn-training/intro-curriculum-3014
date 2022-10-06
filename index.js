@@ -1,9 +1,10 @@
 'use strict';
 const http = require('http');
+const qs = require('querystring');
 const server = http
   .createServer((req, res) => {
     const now = new Date();
-    console.info('[' + now + '] Requested by ' + req.socket.remoteAddress);
+    console.info(`[${now}] Requested by ${req.socket.remoteAddress} ${req.method} ${req.url}`);
     res.writeHead(200, {
       'Content-Type': 'text/html; charset=utf-8'
     });
@@ -21,13 +22,14 @@ const server = http
             rawData = rawData + chunk;
           })
           .on('end', () => {
-            const decoded = decodeURIComponent(rawData);
-            console.info('[' + now + '] 投稿: ' + decoded);
-            res.write(
-              '<!DOCTYPE html><html lang="ja"><body><h1>' +
-                decoded +
-                'が投稿されました</h1></body></html>'
-            );
+            const enquetesAnswer = qs.parse(rawData);
+            console.info(`[${now}] 投稿: ${JSON.stringify(enquetesAnswer)}`);
+            const message = `<!DOCTYPE html><html lang="ja">
+              <h1>${enquetesAnswer['name']}さんは${enquetesAnswer['yaki-shabu']}に投票しました</h1>
+              <body>
+              </body>
+              </html>`
+            res.write(message);
             res.end();
           });
         break;
