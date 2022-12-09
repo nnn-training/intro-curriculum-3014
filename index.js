@@ -23,8 +23,12 @@ const server = http
           .on('end', () => {
             const decoded = decodeURIComponent(rawData);
             console.info(`[${now}] 投稿: ${decoded}`);
+            const answer = new URLSearchParams(rawData);
+            const name = answer.get('name');
+            const yakiOrShabu = answer.get('yaki-shabu');
+            const body = `${name}さんは${yakiOrShabu}に投稿しました`;
             res.write(
-              `<!DOCTYPE html><html lang="ja"><body><h1>${decoded}が投稿されました</h1></body></html>`
+              `<!DOCTYPE html><html lang="ja"><body><h1>${body}</h1></body></html>`
             );
             res.end();
           });
