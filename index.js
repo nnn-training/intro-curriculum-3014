@@ -22,9 +22,12 @@ const server = http
           })
           .on('end', () => {
             const decoded = decodeURIComponent(rawData);
+            const answer = new URLSearchParams(decoded);
+            const answerName = answer.get(`name`);
+            const answerYakiShabu =answer.get(`yaki-shabu`);
             console.info(`[${now}] 投稿: ${decoded}`);
             res.write(
-              `<!DOCTYPE html><html lang="ja"><body><h1>${decoded}が投稿されました</h1></body></html>`
+              `<!DOCTYPE html><html lang="ja"><body><h1>${answerName}さんは${answerYakiShabu}に投票しました。</h1></body></html>`
             );
             res.end();
           });
