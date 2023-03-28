@@ -24,8 +24,9 @@ const server = http
             const decoded = decodeURIComponent(rawData);
             console.info(`[${now}] 投稿: ${decoded}`);
             const queryString = new URLSearchParams(decoded);
+            const body = `${queryString.get('name')}さんは${queryString.get('yaki-shabu')}に投票しました`;
             res.write(
-              `<!DOCTYPE html><html lang="ja"><body><h1>${queryString.get('name')}さんは${queryString.get('yaki-shabu')}に投票しました</h1></body></html>`
+              `<!DOCTYPE html><html lang="ja"><body><h1>${body}</h1></body></html>`
             );
             res.end();
           });
