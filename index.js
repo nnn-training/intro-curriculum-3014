@@ -6,7 +6,7 @@ const server = http
     const now = new Date();
     console.info(`[${now}] Requested by ${req.socket.remoteAddress}`);
     res.writeHead(200, {
-      'Content-Type': 'text/html; charset=utf-8'
+      'Content-Type': 'text/html; charset=utf-8',
     });
 
     switch (req.method) {
@@ -17,14 +17,21 @@ const server = http
       case 'POST':
         let rawData = '';
         req
-          .on('data', chunk => {
+          .on('data', (chunk) => {
             rawData += chunk;
           })
           .on('end', () => {
-            const decoded = decodeURIComponent(rawData);
-            console.info(`[${now}] 投稿: ${decoded}`);
+            const answer = new URLSearchParams(rawData);
+            const body = `${answer.get('name')}さんは${answer.get(
+              'yaki-tofu'
+            )}に投票しました`;
+            console.info(`[${now}] ${body}`);
             res.write(
-              `<!DOCTYPE html><html lang="ja"><body><h1>${decoded}が投稿されました</h1></body></html>`
+              `<!DOCTYPE html><html lang="ja"><body><h1>${answer.get(
+                'name'
+              )}さんは${answer.get(
+                'yaki-tofu'
+              )}に投票しました</h1></body></html>`
             );
             res.end();
           });
@@ -33,10 +40,10 @@ const server = http
         break;
     }
   })
-  .on('error', e => {
+  .on('error', (e) => {
     console.error(`[${new Date()}] Server Error`, e);
   })
-  .on('clientError', e => {
+  .on('clientError', (e) => {
     console.error(`[${new Date()}] Client Error`, e);
   });
 const port = 8000;
