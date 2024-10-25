@@ -1,6 +1,7 @@
 'use strict';
 const http = require('node:http');
 const fs = require('node:fs');
+const { decode } = require('node:punycode');
 const server = http
   .createServer((req, res) => {
     const now = new Date();
@@ -22,16 +23,20 @@ const server = http
           })
           .on('end', () => {
             const decoded = decodeURIComponent(rawData);
+            const answer = new URLSearchParams(decoded);
+            const name = answer.get('name');
+            const selected = answer.get('yaki-tofu')
             console.info(`[${now}] 投稿: ${decoded}`);
             res.write(
-              `<!DOCTYPE html><html lang="ja"><body><h1>${decoded}が投稿されました</h1></body></html>`
+              `<!DOCTYPE html><html lang="ja"><body><h1>${name}さんは${selected}に投票しました</h1></body></html>`
             );
-            res.end();
+            res.end()
           });
         break;
       default:
         break;
     }
+
   })
   .on('error', e => {
     console.error(`[${new Date()}] Server Error`, e);
