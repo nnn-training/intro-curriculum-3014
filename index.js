@@ -21,10 +21,12 @@ const server = http
             rawData += chunk;
           })
           .on('end', () => {
-            const decoded = decodeURIComponent(rawData);
-            console.info(`[${now}] 投稿: ${decoded}`);
+            const answer = new URLSearchParams(rawData);
+            const name = answer.get("name");
+            const selected = answer.get("yaki-tofu");
+            console.info(`[${now}] 投稿: ${name}さんは${selected}に投稿しました`);
             res.write(
-              `<!DOCTYPE html><html lang="ja"><body><h1>${decoded}が投稿されました</h1></body></html>`
+              `<!DOCTYPE html><html lang="ja"><body><h1>${name}さんは${selected}に投稿しました</h1></body></html>`
             );
             res.end();
           });
