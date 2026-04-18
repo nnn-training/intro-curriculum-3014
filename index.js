@@ -20,11 +20,15 @@ const server = http
           .on('data', chunk => {
             rawData += chunk;
           })
-          .on('end', () => {
-            const decoded = decodeURIComponent(rawData);
-            console.info(`[${now}] 投稿: ${decoded}`);
+      .on('end', () => {
+            const params = new URLSearchParams(rawData); // rawDataを解析
+            const name = params.get('name');            // お名前を取り出す
+            const answer = params.get('yaki-pasuta');   // 選択肢を取り出す
+
+            console.info(`[${now}] 投稿: ${name} ${answer}`);
+            
             res.write(
-              `<!DOCTYPE html><html lang="ja"><body><h1>${decoded}が投稿されました</h1></body></html>`
+              `<!DOCTYPE html><html lang="ja"><body><h1>${name}さんは${answer}に投票しました</h1></body></html>`
             );
             res.end();
           });
