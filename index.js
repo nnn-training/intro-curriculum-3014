@@ -23,8 +23,11 @@ const server = http
           .on('end', () => {
             const decoded = decodeURIComponent(rawData);
             console.info(`[${now}] 投稿: ${decoded}`);
+            const params = new URLSearchParams(rawData);
+            const name = params.get('name');
+            const vote = params.get('yaki-tofu');
             res.write(
-              `<!DOCTYPE html><html lang="ja"><body><h1>${decoded}が投稿されました</h1></body></html>`
+              `<!DOCTYPE html><html lang="ja"><body><h1>${name}さんは${vote}に投票しました</h1></body></html>`
             );
             res.end();
           });
