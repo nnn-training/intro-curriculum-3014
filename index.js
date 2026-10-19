@@ -21,7 +21,8 @@ const server = http
             rawData += chunk;
           })
           .on('end', () => {
-            const answer = new URLSearchParams(rawData);
+            const decoded = decodeURIComponent(rawData);
+            const answer = new URLSearchParams(decoded);
             const body = `${answer.get('name')}さんは${answer.get('yaki-tofu')}に投票しました`;
             console.info(`[${now}] ${body}`);
             res.write(
